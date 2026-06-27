@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICON ENGINE · LIVE — Art Direction Board</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
+  :root{
+    --void:#07060c;--ink:#e8e4f5;--dim:#8a82a8;--gold:#d8a84b;--halo:#f4d77e;
+    --neon:#ff2e88;--cyan:#2ee6ff;--ultra:#3b4cff;
+    --line:rgba(216,168,75,.18);--panel:rgba(20,16,34,.72);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 700px at 78% -8%, rgba(255,46,136,.10), transparent 60%),
+      radial-gradient(900px 600px at 8% 110%, rgba(46,230,255,.08), transparent 55%),
+      var(--void);
+    color:var(--ink);font-family:'Space Grotesk',system-ui,sans-serif;
+    min-height:100vh;line-height:1.5;padding:clamp(16px,4vw,48px);-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto}
+  header{text-align:center;padding:clamp(18px,5vw,40px) 0 clamp(14px,3vw,26px)}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);opacity:.85;margin-bottom:16px}
+  h1{font-family:'Cinzel',serif;font-weight:700;font-size:clamp(32px,7.5vw,64px);line-height:.96;
+    background:linear-gradient(180deg,var(--halo),var(--gold) 55%,#9c6f22);-webkit-background-clip:text;background-clip:text;color:transparent;
+    filter:drop-shadow(0 2px 30px rgba(216,168,75,.25))}
+  .sub{margin:13px auto 0;color:var(--dim);font-size:clamp(13px,2.4vw,15px);max-width:600px}
+  .halo-rule{width:min(420px,80%);height:1px;margin:24px auto 0;background:linear-gradient(90deg,transparent,var(--gold),transparent);position:relative}
+  .halo-rule::after{content:'✦';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:var(--gold);background:var(--void);padding:0 12px;font-size:12px}
+
+  .console{margin-top:clamp(22px,4vw,34px);background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3.4vw,24px);backdrop-filter:blur(10px);box-shadow:0 30px 80px -40px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.04)}
+  .console label{display:block;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:11px}
+  .field{display:flex;gap:10px;flex-wrap:wrap}
+  #concept{flex:1;min-width:240px;background:rgba(7,6,12,.7);border:1px solid var(--line);border-radius:12px;color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:16px;padding:15px 16px;outline:none;transition:border-color .2s,box-shadow .2s}
+  #concept::placeholder{color:#544c70}
+  #concept:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(255,46,136,.14)}
+  button.cast{background:linear-gradient(135deg,var(--neon),var(--ultra));color:#fff;border:none;border-radius:12px;cursor:pointer;font-family:'Cinzel',serif;font-weight:700;font-size:15px;letter-spacing:.04em;padding:0 26px;min-height:52px;transition:transform .12s,filter .2s,box-shadow .2s;box-shadow:0 14px 40px -12px rgba(255,46,136,.6)}
+  button.cast:hover{filter:brightness(1.08)}
+  button.cast:active{transform:translateY(1px) scale(.99)}
+  button.cast:disabled{opacity:.5;cursor:wait;filter:grayscale(.3)}
+
+  .seeds{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .seeds span{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;color:#5b5278;text-transform:uppercase}
+  .chip{background:rgba(216,168,75,.07);border:1px solid var(--line);color:var(--gold);border-radius:100px;padding:6px 13px;font-size:12.5px;cursor:pointer;transition:.2s}
+  .chip:hover{background:rgba(255,46,136,.12);border-color:var(--neon);color:var(--ink)}
+  .matched{margin-top:13px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);min-height:14px}
+  .matched b{color:var(--cyan);font-weight:600}.matched .miss{color:var(--neon)}
+
+  /* key bar */
+  .keybar{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:flex;gap:9px;align-items:center;flex-wrap:wrap;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim)}
+  .keybar input{background:rgba(7,6,12,.7);border:1px solid var(--line);border-radius:9px;color:var(--ink);font-family:'JetBrains Mono',monospace;font-size:12px;padding:9px 11px;outline:none;flex:1;min-width:180px}
+  .keybar input:focus{border-color:var(--cyan)}
+  .keybar button{background:rgba(46,230,255,.1);border:1px solid rgba(46,230,255,.3);color:var(--cyan);border-radius:9px;padding:9px 14px;font-family:'JetBrains Mono',monospace;font-size:11px;cursor:pointer;transition:.2s}
+  .keybar button:hover{background:rgba(46,230,255,.2)}
+  .keybar a{color:var(--cyan);text-decoration:none;border-bottom:1px dotted}
+  .status-dot{width:7px;height:7px;border-radius:50%;background:#4d4668;flex-shrink:0}
+  .status-dot.on{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+
+  .board{margin-top:clamp(24px,4vw,40px);display:none}
+  .board.show{display:block}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:clamp(16px,3vw,24px);margin-bottom:18px;backdrop-filter:blur(8px);box-shadow:0 24px 60px -40px rgba(0,0,0,.8);animation:rise .5s both}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .ptitle{display:flex;align-items:center;gap:12px;margin-bottom:18px;border-bottom:1px solid var(--line);padding-bottom:12px;flex-wrap:wrap}
+  .ptitle .num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:.2em}
+  .ptitle h2{font-family:'Cinzel',serif;font-weight:500;font-size:clamp(16px,3vw,21px);letter-spacing:.02em}
+  .ptitle .src{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--dim);margin-left:auto}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
+  .card{position:relative;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.08);background:rgba(7,6,12,.6);aspect-ratio:3/4;cursor:zoom-in;transition:transform .15s}
+  .card:hover{transform:translateY(-3px)}
+  .card img{width:100%;height:100%;object-fit:cover;display:block;background:#141022}
+  .card .cap{position:absolute;left:0;right:0;bottom:0;padding:18px 9px 8px;background:linear-gradient(transparent,rgba(7,6,12,.92));font-size:11px;line-height:1.35}
+  .card .cap .t{color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card .cap .by{color:var(--dim);font-family:'JetBrains Mono',monospace;font-size:9.5px;margin-top:3px}
+  .card .cap .by a{color:var(--dim);text-decoration:none}
+  .skel{aspect-ratio:3/4;border-radius:12px;background:linear-gradient(100deg,rgba(255,255,255,.03) 30%,rgba(255,255,255,.08) 50%,rgba(255,255,255,.03) 70%);background-size:200% 100%;animation:sh 1.3s infinite}
+  @keyframes sh{from{background-position:200% 0}to{background-position:-200% 0}}
+  .note{color:var(--dim);font-size:13px;padding:6px 2px}
+  .note.warn{color:var(--halo)}
+
+  .palette{display:grid;grid-template-columns:repeat(auto-fit,minmax(108px,1fr));gap:11px}
+  .swatch{border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.08);cursor:pointer;transition:transform .15s}
+  .swatch:hover{transform:translateY(-3px)}
+  .swatch .c{height:68px}.swatch .m{padding:8px 10px;background:rgba(7,6,12,.6)}
+  .swatch .nm{font-size:12px}.swatch .hex{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--dim);margin-top:2px}
+  .copied{color:var(--cyan)!important}
+  .axis{display:flex;align-items:center;gap:14px;padding:10px 0;border-bottom:1px solid rgba(216,168,75,.08)}
+  .axis:last-child{border-bottom:none}
+  .axis .a{flex:1;text-align:right;color:var(--halo);font-size:14px}
+  .axis .b{flex:1;color:var(--cyan);font-size:14px}
+  .axis .vs{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--dim)}
+  .comp{list-style:none}.comp li{padding:10px 0 10px 22px;position:relative;font-size:14px;border-bottom:1px solid rgba(216,168,75,.08)}
+  .comp li:last-child{border-bottom:none}.comp li::before{content:'✦';position:absolute;left:0;top:10px;color:var(--gold);font-size:11px}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;background:rgba(3,2,7,.92);display:none;align-items:center;justify-content:center;z-index:50;padding:24px;cursor:zoom-out;backdrop-filter:blur(6px)}
+  .lb.show{display:flex}
+  .lb img{max-width:92vw;max-height:82vh;border-radius:10px;box-shadow:0 30px 90px rgba(0,0,0,.7)}
+  .lb .lcap{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:12px;color:var(--dim);font-family:'JetBrains Mono',monospace;padding:0 24px}
+  .lb .lcap a{color:var(--cyan);text-decoration:none}
+  footer{text-align:center;margin-top:34px;color:#4d4668;font-size:11.5px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;line-height:1.7}
+  @media (max-width:560px){.grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Live Art Direction Board</div>
+    <h1>ICON ENGINE</h1>
+    <p class="sub">Collide concepts. Pulls real paintings from Wikimedia and modern plates from Unsplash into one board — plus palette, axes, and composition moves. Sacred meets machine.</p>
+    <div class="halo-rule"></div>
+  </header>
+
+  <div class="console">
+    <label>Concept collision</label>
+    <div class="field">
+      <input id="concept" type="text" placeholder="Madonna + cyberpunk + neon Tokyo" autocomplete="off">
+      <button class="cast" id="cast">Build Board</button>
+    </div>
+    <div class="seeds">
+      <span>Try</span>
+      <button class="chip" data-seed="Madonna + cyberpunk + neon Tokyo">Madonna · neon Tokyo</button>
+      <button class="chip" data-seed="Saint Michael + stock exchange + capitalism">St. Michael · the market</button>
+      <button class="chip" data-seed="Byzantine icon + flooded megacity">Icon · flooded city</button>
+      <button class="chip" data-seed="angels + surveillance + glitch">Angels · surveillance</button>
+    </div>
+    <div class="matched" id="matched"></div>
+    <div class="keybar">
+      <span class="status-dot" id="dot"></span>
+      <span id="keylabel">Unsplash key (optional — lights up modern plates):</span>
+      <input id="ukey" type="password" placeholder="paste Unsplash Access Key" autocomplete="off">
+      <button id="savekey">Save</button>
+      <a href="https://unsplash.com/developers" target="_blank" rel="noopener">get a free key →</a>
+    </div>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <footer>
+    ICON ENGINE · LIVE<br>
+    Paintings via Wikimedia Commons (public domain) · Modern plates via Unsplash API (photographer credited per their terms)<br>
+    Key stored locally in your browser only · runs entirely in this file
+  </footer>
+</div>
+
+<div class="lb" id="lb"><img id="lbimg" alt=""><div class="lcap" id="lbcap"></div></div>
+
+<script>
+/* ---------------- knowledge base ---------------- */
+const PAL={ultramarine:['Ultramarine','#1b2a8f'],marianblue:['Marian Blue','#2b3a8c'],goldleaf:['Gold Leaf','#d8a84b'],haloglow:['Halo Glow','#f4d77e'],magenta:['Magenta Neon','#ff2e88'],cyan:['Cyan Signal','#2ee6ff'],electric:['Electric Indigo','#5a2cff'],vermilion:['Vermilion','#e23a2e'],bone:['Bone White','#efe9da'],oxblood:['Oxblood','#5c1a1f'],emerald:['Sacred Emerald','#0f5c4a'],void:['Void Black','#07060c'],amber:['Amber CRT','#ffae3b'],teal:['Deep Teal','#0a3a47'],silver:['Chrome Silver','#c9cdd6']};
+
+// each token: keywords, wiki search terms (paintings), unsplash terms (modern), axes, palette, comp
+const TOKENS=[
+ {id:'madonna',kw:['madonna','virgin','mary','mother','motherhood','maternal','child','nativity'],
+  wiki:['Bouguereau Madonna','Sassoferrato Virgin','Raphael Madonna'],
+  unsplash:['mother child silhouette','soft portrait light'],
+  axes:[['Motherhood','Machine'],['Tenderness','Spectacle']],pal:['ultramarine','goldleaf','bone','marianblue'],
+  comp:['Central enthroned figure, downcast eyes — let chaos orbit a calm core.','Swap the gilded halo for a holographic ring or lens flare.']},
+ {id:'angels',kw:['angel','angels','cherub','seraph','wings','choir','host'],
+  wiki:['Bouguereau angels','Hans Memling angel','Gustave Dore angels'],
+  unsplash:['light rays particles','smoke ethereal'],
+  axes:[['Choir','Crowd surveillance'],['Wings','Wireframe']],pal:['haloglow','bone','cyan','electric'],
+  comp:['Fade duplicated angels to 20–40% opacity as "data ghosts" in negative space.','Dissolve wings into scanlines or particle trails at the edges.']},
+ {id:'cyberpunk',kw:['cyberpunk','neon','tokyo','city','cityscape','skyline','megacity','urban','billboard','hologram','holographic','future'],
+  wiki:[],
+  unsplash:['neon tokyo night','cyberpunk city rain','neon signs alley','futuristic skyline night'],
+  axes:[['Divine light','LED light'],['Cathedral','Skyscraper']],pal:['magenta','cyan','electric','void'],
+  comp:['Stack the skyline behind the figure; multiply-blend so neon bleeds through the veil.','Match the painting\'s key light to the brightest billboard.']},
+ {id:'byzantine',kw:['byzantine','icon','iconography','orthodox','mosaic','saint','sacred','holy','religious','divine','gothic','gold'],
+  wiki:['Byzantine icon mosaic','Andrei Rublev Trinity','Duccio Maesta','Hagia Sophia mosaic'],
+  unsplash:['gold texture leaf','cathedral interior dark'],
+  axes:[['Gold ground','Glass screen'],['Eternal','Real-time']],pal:['goldleaf','haloglow','oxblood','emerald'],
+  comp:['Treat gold leaf as an emissive layer — screen-blend a soft glow over it.','Keep icon faces frontal and flat against a deep perspectival background.']},
+ {id:'baroque',kw:['baroque','chiaroscuro','caravaggio','dramatic','tenebrism','shadow','candlelight','rembrandt'],
+  wiki:['Caravaggio painting','Rembrandt night watch','Georges de La Tour candle'],
+  unsplash:['single light darkness','candle flame dark'],
+  axes:[['Candlelight','Screenglow'],['Revealed','Hidden']],pal:['amber','oxblood','void','bone'],
+  comp:['One dominant light source; crush everything else toward black.','Let the lit edge pick up the neon hue, not white.']},
+ {id:'capital',kw:['capitalism','stock','exchange','market','money','corporate','commerce','greed','advertising','brand'],
+  wiki:['Holbein Ambassadors','Diego Rivera mural','quentin matsys money'],
+  unsplash:['stock exchange screens','city advertising billboards','financial district'],
+  axes:[['Worship','Consumption'],['Offering','Transaction']],pal:['goldleaf','emerald','oxblood','silver'],
+  comp:['Frame the figure like a billboard mascot — halo as a logo ring.','Ticker tape / price grids as the "scripture" crawling behind the saint.']},
+ {id:'surveillance',kw:['surveillance','data','ghost','glitch','scan','cctv','camera','panopticon','digital','code','wireframe','ai','machine'],
+  wiki:[],
+  unsplash:['glitch distortion','security cameras','data code screen','abstract digital noise'],
+  axes:[['All-seeing God','All-seeing camera'],['Soul','Dataset']],pal:['cyan','electric','magenta','void'],
+  comp:['Drop faint detection rectangles / keypoints over angel faces.','RGB-shift the figure\'s edges so it reads as "rendered."']},
+ {id:'flood',kw:['flood','flooded','water','drowned','submerged','ocean','rain','deluge','climate','apocalypse','ruin'],
+  wiki:['John Martin Deluge','Caspar David Friedrich sea','Turner storm'],
+  unsplash:['flooded street water','still water reflection night','rain neon reflection'],
+  axes:[['Salvation','Submersion'],['Ark','Ruin']],pal:['teal','cyan','silver','void'],
+  comp:['Half-submerge the architecture; reflect neon in still water below the figure.','Raise the figure on the last dry step — the saved remnant.']},
+];
+const HINT='Tokens: madonna · angels · cyberpunk/neon · byzantine/icon · baroque · capitalism · surveillance/glitch · flood';
+
+/* ---------------- key handling ---------------- */
+let UKEY='';
+try{UKEY=localStorage.getItem('icon_unsplash_key')||''}catch(e){}
+const dot=document.getElementById('dot'),ukeyIn=document.getElementById('ukey');
+function refreshKey(){dot.classList.toggle('on',!!UKEY); if(UKEY) ukeyIn.placeholder='key saved ✓';}
+refreshKey();
+document.getElementById('savekey').addEventListener('click',()=>{
+  UKEY=ukeyIn.value.trim();
+  try{localStorage.setItem('icon_unsplash_key',UKEY)}catch(e){}
+  ukeyIn.value='';refreshKey();
+});
+
+/* ---------------- matching ---------------- */
+function match(input){const t=input.toLowerCase();return TOKENS.filter(tok=>tok.kw.some(k=>t.includes(k)));}
+function uniq(a){return [...new Set(a)];}
+
+/* ---------------- fetchers ---------------- */
+async function wikiSearch(term,limit=4){
+  const url='https://commons.wikimedia.org/w/api.php?action=query&generator=search'+
+    '&gsrsearch='+encodeURIComponent(term+' filetype:bitmap')+'&gsrlimit='+limit+
+    '&gsrnamespace=6&prop=imageinfo&iiprop=url|extmetadata&iiurlwidth=420&format=json&origin=*';
+  const r=await fetch(url);if(!r.ok)throw new Error('wiki '+r.status);
+  const j=await r.json();const pages=j?.query?.pages?Object.values(j.query.pages):[];
+  return pages.map(p=>{const ii=p.imageinfo&&p.imageinfo[0];if(!ii)return null;
+    let title=(p.title||'').replace(/^File:/,'').replace(/\.(jpg|jpeg|png|tiff?|gif)$/i,'');
+    return{thumb:ii.thumburl||ii.url,full:ii.url,title:title,by:'Wikimedia Commons',byUrl:ii.descriptionurl||'#'};
+  }).filter(Boolean);
+}
+async function unsplashSearch(term,perPage=3){
+  if(!UKEY)return[];
+  const url='https://api.unsplash.com/search/photos?query='+encodeURIComponent(term)+
+    '&per_page='+perPage+'&orientation=portrait&content_filter=high';
+  const r=await fetch(url,{headers:{'Authorization':'Client-ID '+UKEY,'Accept-Version':'v1'}});
+  if(r.status===401)throw new Error('unsplash-auth');
+  if(r.status===403)throw new Error('unsplash-rate');
+  if(!r.ok)throw new Error('unsplash '+r.status);
+  const j=await r.json();
+  return (j.results||[]).map(p=>({
+    thumb:p.urls.small,full:p.urls.regular,
+    title:p.alt_description||p.description||term,
+    by:p.user.name,byUrl:p.user.links.html+'?utm_source=icon_engine&utm_medium=referral'
+  }));
+}
+
+/* ---------------- render ---------------- */
+const boardEl=document.getElementById('board'),matchedEl=document.getElementById('matched'),castBtn=document.getElementById('cast');
+
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function skeletons(n){let h='';for(let i=0;i<n;i++)h+='<div class="skel"></div>';return h;}
+function cardHtml(img){
+  return `<div class="card" data-full="${esc(img.full)}" data-title="${esc(img.title)}" data-by="${esc(img.by)}" data-byurl="${esc(img.byUrl)}">
+    <img loading="lazy" src="${esc(img.thumb)}" alt="${esc(img.title)}" onerror="this.parentElement.style.display='none'">
+    <div class="cap"><div class="t">${esc(img.title)}</div><div class="by"><a href="${esc(img.byUrl)}" target="_blank" rel="noopener">${esc(img.by)}</a></div></div>
+  </div>`;
+}
+
+async function build(){
+  const raw=document.getElementById('concept').value.trim();
+  if(!raw){matchedEl.innerHTML='<span class="miss">Type a concept collision first.</span>';return;}
+  const hits=match(raw);
+  if(!hits.length){matchedEl.innerHTML='<span class="miss">No tokens matched.</span> '+esc(HINT);boardEl.classList.remove('show');boardEl.innerHTML='';return;}
+  matchedEl.innerHTML='Matched <b>'+hits.length+'</b>: '+hits.map(h=>'<b>'+h.id+'</b>').join(' · ');
+
+  // assemble static parts
+  let axes=[],pal=[],comp=[],wikiTerms=[],unsTerms=[];
+  hits.forEach(h=>{axes=axes.concat(h.axes);pal=pal.concat(h.pal);comp=comp.concat(h.comp);wikiTerms=wikiTerms.concat(h.wiki);unsTerms=unsTerms.concat(h.unsplash);});
+  axes=axes.filter((a,i,arr)=>arr.findIndex(x=>x[0]===a[0]&&x[1]===a[1])===i).slice(0,5);
+  pal=uniq(pal).slice(0,8);comp=uniq(comp).slice(0,6);
+  wikiTerms=uniq(wikiTerms).slice(0,4);unsTerms=uniq(unsTerms).slice(0,4);
+
+  const palHtml=pal.map(k=>{const p=PAL[k];return `<div class="swatch" data-hex="${p[1]}"><div class="c" style="background:${p[1]}"></div><div class="m"><div class="nm">${p[0]}</div><div class="hex">${p[1]}</div></div></div>`;}).join('');
+  const axesHtml=axes.map(a=>`<div class="axis"><div class="a">${esc(a[0])}</div><div class="vs">VS</div><div class="b">${esc(a[1])}</div></div>`).join('')||'<div class="note">—</div>';
+  const compHtml=comp.map(c=>`<li>${esc(c)}</li>`).join('');
+
+  const unsCount=unsTerms.length*3;
+  boardEl.innerHTML=`
+    <div class="panel">
+      <div class="ptitle"><span class="num">I</span><h2>Sacred References</h2><span class="src">Wikimedia · public domain</span></div>
+      <div class="grid" id="wikigrid">${wikiTerms.length?skeletons(Math.min(8,wikiTerms.length*3)):'<div class="note">No painting references for these tokens.</div>'}</div>
+    </div>
+    <div class="panel">
+      <div class="ptitle"><span class="num">II</span><h2>Modern Plates</h2><span class="src">Unsplash</span></div>
+      <div class="grid" id="unsgrid">${UKEY?(unsTerms.length?skeletons(Math.min(9,unsCount)):'<div class="note">—</div>'):'<div class="note warn">Add a free Unsplash key above to load modern plates. The sacred half works without it.</div>'}</div>
+    </div>
+    <div class="panel"><div class="ptitle"><span class="num">III</span><h2>Color Palette</h2></div><div class="palette">${palHtml}</div><div class="note" style="margin-top:10px;font-size:12px">Tap a swatch to copy its hex.</div></div>
+    <div class="panel"><div class="ptitle"><span class="num">IV</span><h2>Symbolic Axes</h2></div>${axesHtml}</div>
+    <div class="panel"><div class="ptitle"><span class="num">V</span><h2>Composition Moves</h2></div><ul class="comp">${compHtml}</ul></div>`;
+  boardEl.classList.add('show');
+  bindSwatches();
+  boardEl.scrollIntoView({behavior:'smooth',block:'start'});
+
+  // async load images
+  castBtn.disabled=true;
+  if(wikiTerms.length){
+    Promise.all(wikiTerms.map(t=>wikiSearch(t,3).catch(()=>[]))).then(res=>{
+      const imgs=dedupe(res.flat());const g=document.getElementById('wikigrid');
+      g.innerHTML=imgs.length?imgs.map(cardHtml).join(''):'<div class="note">Wikimedia returned nothing — try different wording.</div>';
+      bindCards();
+    });
+  }
+  if(UKEY&&unsTerms.length){
+    Promise.all(unsTerms.map(t=>unsplashSearch(t,3).catch(e=>({err:e.message})))).then(res=>{
+      const g=document.getElementById('unsgrid');
+      const authErr=res.find(r=>r&&r.err==='unsplash-auth');const rateErr=res.find(r=>r&&r.err==='unsplash-rate');
+      const imgs=dedupe(res.filter(r=>Array.isArray(r)).flat());
+      if(authErr){g.innerHTML='<div class="note warn">Unsplash key rejected (401). Check the Access Key and re-save.</div>';}
+      else if(!imgs.length&&rateErr){g.innerHTML='<div class="note warn">Unsplash rate limit hit (50/hr on free tier). Wait an hour or narrow your searches.</div>';}
+      else g.innerHTML=imgs.length?imgs.map(cardHtml).join(''):'<div class="note">No modern plates found.</div>';
+      bindCards();
+    });
+  }
+  castBtn.disabled=false;
+}
+function dedupe(imgs){const seen=new Set();return imgs.filter(i=>{if(seen.has(i.full))return false;seen.add(i.full);return true;});}
+
+/* swatch + card + lightbox binding */
+function bindSwatches(){boardEl.querySelectorAll('.swatch').forEach(s=>{s.onclick=()=>{const hex=s.dataset.hex;try{navigator.clipboard.writeText(hex)}catch(e){}const nm=s.querySelector('.nm'),o=nm.textContent;nm.textContent='Copied';nm.classList.add('copied');setTimeout(()=>{nm.textContent=o;nm.classList.remove('copied')},850);};});}
+const lb=document.getElementById('lb'),lbimg=document.getElementById('lbimg'),lbcap=document.getElementById('lbcap');
+function bindCards(){boardEl.querySelectorAll('.card').forEach(c=>{c.onclick=()=>{lbimg.src=c.dataset.full;lbcap.innerHTML=esc(c.dataset.title)+' · <a href="'+esc(c.dataset.byurl)+'" target="_blank" rel="noopener">'+esc(c.dataset.by)+'</a>';lb.classList.add('show');};});}
+lb.onclick=()=>lb.classList.remove('show');
+
+/* events */
+castBtn.addEventListener('click',build);
+document.getElementById('concept').addEventListener('keydown',e=>{if(e.key==='Enter')build();});
+document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{document.getElementById('concept').value=c.dataset.seed;build();}));
+</script>
+</body>
+</html>
